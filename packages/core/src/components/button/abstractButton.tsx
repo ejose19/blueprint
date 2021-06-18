@@ -170,7 +170,11 @@ export abstract class AbstractButton<E extends HTMLButtonElement | HTMLAnchorEle
         /* eslint-disable deprecation/deprecation */
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
-            this.buttonRef?.click();
+            // HACKHACK: https://github.com/palantir/blueprint/issues/4170
+            /* eslint-disable deprecation/deprecation */
+            if (!(navigator.userAgent.includes("Firefox") && e.which === Keys.SPACE)) {
+                this.buttonRef?.click();
+            }
         }
         this.currentKeyDown = undefined;
         this.props.onKeyUp?.(e);
